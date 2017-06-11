@@ -13,7 +13,7 @@ android {
 
         javaCompileOptions {
             annotationProcessorOptions {
-                arguments = [ moduleName : project.getName() ]
+                arguments = [moduleName: project.getName()]
             }
         }
     }
@@ -29,8 +29,10 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':baselibrary')
     compile 'com.alibaba:arouter-api:1.2.1.1'
+    compile 'de.greenrobot:eventbus:3.0.0-beta1'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
     annotationProcessor 'com.alibaba:arouter-compiler:1.1.2.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    compile 'de.greenrobot:eventbus:3.0.0-beta1'
 }

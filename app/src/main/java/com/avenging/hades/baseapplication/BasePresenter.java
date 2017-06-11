@@ -8,7 +8,7 @@ import android.graphics.YuvImage;
 
 public abstract class BasePresenter<T> {
 
-    private T mView;
+    protected T mView;
 
     public final void attachView(T mView){
         this.mView=mView;

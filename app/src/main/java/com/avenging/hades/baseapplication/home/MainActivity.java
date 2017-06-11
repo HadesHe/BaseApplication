@@ -1,5 +1,6 @@
 package com.avenging.hades.baseapplication.home;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.avenging.hades.baseapplication.R;
+import com.squareup.haha.perflib.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +49,34 @@ public class MainActivity extends AppCompatActivity implements HomeContract.Home
         rvHome.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         rvHome.setAdapter(mAdapter);
 
-        View loadingView=LayoutInflater.from(this).inflate(R.layout.item_empty_view,null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mHomePresenter.loadDatas();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mHomePresenter.detachView();
+    }
+
+    @Override
+    public void onGetDataList(List<String> nameList) {
+        if(nameList!=null&&nameList.size()>0){
+            this.data.clear();
+            this.data.addAll(nameList);
+            mAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void intentActivity(Class activity) {
+        startActivity(new Intent(MainActivity.this,activity));
+
     }
 
     public interface HomeItemClickLitener{
