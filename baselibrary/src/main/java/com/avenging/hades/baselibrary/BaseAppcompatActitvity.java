@@ -22,6 +22,39 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(toggleOverridePendingTransition()){
+            switch (getOverridePendingTransition()){
+                case TRANSITION_MODE_LEFT:
+                    overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                    break;
+                case TRANSITION_MODE_RIGHT:
+                    overridePendingTransition(R.anim.right_in,R.anim.right_out);
+                    break;
+                case TRANSITION_MODE_TOP:
+                    overridePendingTransition(R.anim.top_in,R.anim.top_out);
+                    break;
+                case TRANSITION_MODE_BOTTOM:
+                    overridePendingTransition(R.anim.bottom_in,R.anim.bottom_out);
+                    break;
+                case TRANSITION_MODE_SCALE:
+                    overridePendingTransition(R.anim.scale_in,R.anim.scale_out);
+                    break;
+                case TRANSITION_MODE_FADE:
+                    overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                    break;
+
+            }
+        }
         super.onCreate(savedInstanceState);
+        Bundle extra=getIntent().getExtras();
+        if(extra!=null){
+            getBundleExtras(extra);
+        }
     }
+
+    protected abstract void getBundleExtras(Bundle extra);
+
+    protected abstract @TransitionMode int getOverridePendingTransition();
+
+    protected abstract boolean toggleOverridePendingTransition();
 }
