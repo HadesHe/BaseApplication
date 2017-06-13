@@ -1,4 +1,4 @@
-package com.avenging.hades.baselibrary;
+package com.avenging.hades.client;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -17,14 +17,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(isApplyKitKatTransluency()){
-            setSystemBarTintDrawable
+            setSystemBarTintDrawable(getResources().getDrawable(com.avenging.hades.baselibrary.R.drawable.sr_primary));
         }
     }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        mToolbar=(Toolbar)findViewById(R.id.common_toolbar);
+        mToolbar=(Toolbar)findViewById(com.avenging.hades.baselibrary.R.id.common_toolbar);
         if(mToolbar!=null){
             setSupportActionBar(mToolbar);
             getSupportActionBar().setHomeButtonEnabled(true);
