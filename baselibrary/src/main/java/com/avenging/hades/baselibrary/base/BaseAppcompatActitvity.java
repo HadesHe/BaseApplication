@@ -1,11 +1,15 @@
-package com.avenging.hades.baselibrary;
+package com.avenging.hades.baselibrary.base;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 
-import com.avenging.hades.baselibrary.base.BaseAppManager;
+import com.avenging.hades.baselibrary.R;
+import com.avenging.hades.baselibrary.netstatus.NetChangeObserver;
+import com.avenging.hades.baselibrary.netstatus.NetStateReceiver;
+import com.avenging.hades.baselibrary.netstatus.NetUtils;
 import com.avenging.hades.baselibrary.utils.SmartBarUtils;
 
 import java.lang.annotation.Retention;
@@ -21,6 +25,10 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     public static final int TRANSITION_MODE_FADE=5;
     private String TAG_LOG ;
     private Context mContext;
+    private float mScreenDensity;
+    private int mScreenHeight;
+    private int mScreenWidth;
+    private NetChangeObserver mNetChangeObserver;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({TRANSITION_MODE_LEFT,TRANSITION_MODE_RIGHT,TRANSITION_MODE_TOP,TRANSITION_MODE_BOTTOM,TRANSITION_MODE_SCALE,TRANSITION_MODE_FADE})
@@ -64,6 +72,51 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
         mContext=this;
         TAG_LOG=this.getClass().getSimpleName();
         BaseAppManager.getInstance().addActivity(this);
+
+        initScreen();
+
+        if(getContentViewLayoutID()!=0){
+            setContentView(getContentViewLayoutID());
+        }else{
+            throw new IllegalArgumentException("You must return a right contentView layout resource Id");
+        }
+
+        mNetChangeObserver=new NetChangeObserver(){
+
+            @Override
+            public void onNetConnected(@NetUtils.NetType int type) {
+                super.onNetConnected(type);
+                onNetWorkConnected(type);
+
+            }
+
+            @Override
+            public void onNetDisconnect() {
+                super.onNetDisconnect();
+                onNetworkDisConnected();
+
+            }
+        };
+
+        NetStateReceiver.registerObserver(mNetChangeObserver);
+
+        initViewAndEvents();
+
+    }
+
+    protected abstract void onNetworkDisConnected();
+
+    protected abstract void onNetWorkConnected(int type);
+
+    protected abstract int getContentViewLayoutID();
+
+    private void initScreen() {
+        DisplayMetrics displayMetrics=new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        mScreenDensity=displayMetrics.density;
+        mScreenHeight=displayMetrics.heightPixels;
+        mScreenWidth=displayMetrics.widthPixels;
+
     }
 
     protected abstract void getBundleExtras(Bundle extra);
