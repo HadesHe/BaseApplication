@@ -2,11 +2,15 @@ package com.avenging.hades.baselibrary.base;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MenuItem;
+import android.view.View;
 
 import com.avenging.hades.baselibrary.R;
+import com.avenging.hades.baselibrary.loading.VaryViewHelperController;
 import com.avenging.hades.baselibrary.netstatus.NetChangeObserver;
 import com.avenging.hades.baselibrary.netstatus.NetStateReceiver;
 import com.avenging.hades.baselibrary.netstatus.NetUtils;
@@ -103,6 +107,25 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
         initViewAndEvents();
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setContentView(@LayoutRes int layoutResID) {
+        super.setContentView(layoutResID);
+        if(null!=getLoadingTargetView()){
+            mVaryViewHelperController=new VaryViewHelperController(getLoadingTargetView());
+        }
+    }
+
+    protected abstract View getLoadingTargetView();
 
     protected abstract void onNetworkDisConnected();
 
