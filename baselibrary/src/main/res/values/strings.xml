@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BaseLibrary</string>
+    <string name="common_error_message">Try again</string>
 </resources>
