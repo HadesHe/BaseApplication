@@ -1,8 +1,11 @@
 package com.avenging.hades.baselibrary.loading;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.avenging.hades.baselibrary.R;
+import com.avenging.hades.baselibrary.utils.CommonUtils;
 
 /**
  * __   __    _
@@ -25,5 +28,33 @@ public class VaryViewHelperController {
 
     public void showNetworkError(View.OnClickListener onClickListener){
         View layout=helper.inflate(R.layout.message);
+        TextView textView= (TextView) layout.findViewById(R.id.tvMessageInfo);
+        textView.setText(helper.getContext().getResources().getString(R.string.common_no_network_message));
+        ImageView imageView= (ImageView) layout.findViewById(R.id.ivMessageIcon);
+        imageView.setImageResource(R.drawable.ic_exception);
+
+        if(onClickListener != null){
+            layout.setOnClickListener(onClickListener);
+        }
+
+        helper.showLayout(layout);
+    }
+
+    public void showError(String errorMessage,View.OnClickListener onClickListener){
+        View layout=helper.inflate(R.layout.message);
+        TextView textView= (TextView) layout.findViewById(R.id.tvMessageInfo);
+        if(!CommonUtils.isEmpty(errorMessage)){
+            textView.setText(errorMessage);
+        }else{
+            textView.setText(helper.getContext().getResources().getString(R.string.common_error_message));
+        }
+
+        ImageView imageView= (ImageView) layout.findViewById(R.id.ivMessageIcon);
+        imageView.setImageResource(R.drawable.ic_error);
+        if(null != onClickListener){
+            layout.setOnClickListener(onClickListener);
+        }
+
+        helper.showLayout(layout);
     }
 }
