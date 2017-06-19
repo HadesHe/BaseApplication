@@ -1,11 +1,15 @@
 package com.avenging.hades.baselibrary.base;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,6 +41,7 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     private int mScreenWidth;
     private NetChangeObserver mNetChangeObserver;
     private VaryViewHelperController mVaryViewHelperController;
+    private Snackbar mSnackBar;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({TRANSITION_MODE_LEFT,TRANSITION_MODE_RIGHT,TRANSITION_MODE_TOP,TRANSITION_MODE_BOTTOM,TRANSITION_MODE_SCALE,TRANSITION_MODE_FADE})
@@ -216,4 +221,110 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     protected abstract @TransitionMode int getOverridePendingTransition();
 
     protected abstract boolean toggleOverridePendingTransition();
+
+    protected void readyGo(Class<?> clazz){
+        Intent intent=new Intent(this,clazz);
+        startActivity(intent);
+    }
+
+    protected void readyGo(Class<?> clazz,Bundle bundle){
+        Intent intent=new Intent(this,clazz);
+        if(bundle != null){
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+    }
+
+    protected void readyGoThenKill(Class<?> clazz){
+        Intent intent=new Intent(this,clazz);
+        startActivity(intent);
+        finish();
+    }
+
+    protected void readyGoThenKill(Class<?> clazz,Bundle bundle){
+        Intent intent=new Intent(this,clazz);
+        if(bundle != null){
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+        finish();
+    }
+
+    protected void readyGoForResult(Class<?> clazz,int requestCode){
+        Intent intent=new Intent(this,clazz);
+        startActivityForResult(intent,requestCode);
+    }
+
+    protected void readyGoForResult(Class<?> clazz,int requestCode,Bundle bundle){
+        Intent inten=new Intent(this,clazz);
+        if(null != bundle){
+            inten.putExtras(bundle);
+        }
+        startActivityForResult(inten,requestCode);
+    }
+
+    protected void showShortToast(String msg){
+        if(!TextUtils.isEmpty(msg)){
+            if(mSnackBar==null) {
+                mSnackBar = Snackbar.make(getLoadingTargetView(), msg, Snackbar.LENGTH_SHORT);
+            }else{
+                mSnackBar.setText(msg);
+            }
+            mSnackBar.show();
+        }
+    }
+
+    protected void toggleShowLoading(boolean toggle,String msg){
+        if(null==mVaryViewHelperController){
+            throw new IllegalArgumentException("You must return a right target view for loading");
+        }
+        if (toggle) {
+            mVaryViewHelperController.showLoading(msg);
+        }else{
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    protected void toggleShowEmpty(boolean toggle,String msg,View.OnClickListener onClickListener){
+        if(null==mVaryViewHelperController){
+            throw new IllegalArgumentException("You must return a right target view for empty");
+        }
+        if (toggle) {
+            mVaryViewHelperController.showEmpty(msg,onClickListener);
+        }else{
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    protected void toggleShowError(boolean toggle,String msg,View.OnClickListener onClickListener){
+        if(null==mVaryViewHelperController){
+            throw new IllegalArgumentException("You must return a right target view for error");
+        }
+        if (toggle) {
+            mVaryViewHelperController.showError(msg,onClickListener);
+        }else{
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    protected void toggleNetError(boolean toggle,String msg,View.OnClickListener onClickListener){
+        if(null==mVaryViewHelperController){
+            throw new IllegalArgumentException("You must return a right target view for net error");
+        }
+        if (toggle) {
+            mVaryViewHelperController.showNetworkError(onClickListener);
+        }else{
+            mVaryViewHelperController.restore();
+        }
+    }
+
+    protected void setSystemBarTintDrawable(Drawable tintDrawable){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+            // TODO: 2017/6/19 start SystemBarTintManager
+            SystemBarTintManager mTintManager=new SystemBarTintManager(this);
+        }
+    }
+
+
+
 }
