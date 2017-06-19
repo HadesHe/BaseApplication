@@ -57,4 +57,34 @@ public class VaryViewHelperController {
 
         helper.showLayout(layout);
     }
+
+    public void showEmpty(String emptyMsg,View.OnClickListener onClickListener){
+        View layout=helper.inflate(R.layout.message);
+        TextView textView= (TextView) layout.findViewById(R.id.tvMessageInfo);
+        if(!CommonUtils.isEmpty(emptyMsg)){
+            textView.setText(emptyMsg);
+        }else{
+            textView.setText(helper.getContext().getResources().getString(R.string.common_empty_message));
+        }
+
+        ImageView imageView= (ImageView) layout.findViewById(R.id.ivMessageIcon);
+        imageView.setImageResource(R.drawable.ic_exception);
+        if(null != onClickListener){
+            layout.setOnClickListener(onClickListener);
+        }
+        helper.showLayout(layout);
+    }
+
+    public void showLoading(String message){
+        View layout=helper.inflate(R.layout.loading);
+        if(!CommonUtils.isEmpty(message)){
+            TextView textView= (TextView) layout.findViewById(R.id.tvMessage);
+            textView.setText(message);
+        }
+        helper.showLayout(layout);
+    }
+
+    public void restore(){
+        helper.restoreView();
+    }
 }

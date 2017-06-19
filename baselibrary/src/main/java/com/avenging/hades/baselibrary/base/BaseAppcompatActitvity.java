@@ -1,6 +1,7 @@
 package com.avenging.hades.baselibrary.base;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.avenging.hades.baselibrary.R;
 import com.avenging.hades.baselibrary.loading.VaryViewHelperController;
@@ -33,6 +36,7 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     private int mScreenHeight;
     private int mScreenWidth;
     private NetChangeObserver mNetChangeObserver;
+    private VaryViewHelperController mVaryViewHelperController;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({TRANSITION_MODE_LEFT,TRANSITION_MODE_RIGHT,TRANSITION_MODE_TOP,TRANSITION_MODE_BOTTOM,TRANSITION_MODE_SCALE,TRANSITION_MODE_FADE})
@@ -70,6 +74,9 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
         }
 
         // TODO: 2017/6/14 bind eventbus
+//        if(isBindEventBusHere()){
+//            EventBus.getDefault().register(this);
+//        }
 
         SmartBarUtils.hide(getWindow().getDecorView());
         setTranslucentStatus(isApplyStatusBarTranslucency());
@@ -108,6 +115,25 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
 
     }
 
+    protected abstract void initViewAndEvents();
+
+    private void setTranslucentStatus(boolean on) {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
+            Window window=getWindow();
+            WindowManager.LayoutParams winParams=window.getAttributes();
+            final int bits=WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            if(on){
+                winParams.flags|=bits;
+            }else{
+                winParams.flags&=~bits;
+            }
+            window.setAttributes(winParams);
+
+        }
+    }
+
+    protected abstract boolean isApplyStatusBarTranslucency();
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==android.R.id.home){
@@ -118,12 +144,55 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     }
 
     @Override
+    public void finish() {
+        super.finish();
+        BaseAppManager.getInstance().removeActivity(this);
+        if(toggleOverridePendingTransition()){
+            switch (getOverridePendingTransition()){
+                case TRANSITION_MODE_LEFT:
+                    overridePendingTransition(R.anim.left_in,R.anim.left_out);
+                    break;
+                case TRANSITION_MODE_RIGHT:
+                    overridePendingTransition(R.anim.right_in,R.anim.right_out);
+                    break;
+                case TRANSITION_MODE_TOP:
+                    overridePendingTransition(R.anim.top_in,R.anim.top_out);
+                    break;
+                case TRANSITION_MODE_BOTTOM:
+                    overridePendingTransition(R.anim.bottom_in,R.anim.bottom_out);
+                    break;
+                case TRANSITION_MODE_SCALE:
+                    overridePendingTransition(R.anim.scale_in,R.anim.scale_out);
+                    break;
+                case TRANSITION_MODE_FADE:
+                    overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                    break;
+            }
+        }
+    }
+
+    @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        initView();
         if(null!=getLoadingTargetView()){
             mVaryViewHelperController=new VaryViewHelperController(getLoadingTargetView());
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // TODO: 2017/6/19 resetButterknife
+//        ButterKnife.reset(this);
+        NetStateReceiver.removeRegisterObserver(mNetChangeObserver);
+        // TODO: 2017/6/19 unregister Butterknife
+//        if(isBindEventBusHere()){
+//            EventBus.getDefault().unregister(this);
+//        }
+    }
+
+    protected abstract void initView();
 
     protected abstract View getLoadingTargetView();
 
