@@ -1,33 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/activity_splash"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@android:color/black"
-    tools:context="com.avenging.hades.client.splash.SplashActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/activity_splash"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/black"
+                tools:context="com.avenging.hades.client.splash.SplashActivity">
 
-   <ImageView
-       android:id="@+id/ivSplashImage"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:scaleType="fitXY"
-       android:src="@drawable/night"
-       />
+    <ImageView
+        android:id="@+id/ivSplashImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/night"
+        />
+
     <TextView
         android:id="@+id/tvSplashAppName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/splash_top_margin"
+        android:text="@string/app_name"
+        android:textColor="@android:color/white"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
         />
+
     <TextView
         android:id="@+id/tvSplashSlogan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/splash_logan"
+        android:textSize="@dimen/small_text"
+        android:textColor="@color/alpha_90_white"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/splash_middle_top_margin"
+        android:layout_below="@+id/tvSplashAppName"
         />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="@color/alpha_10_white"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/splash_bottom_padding"
+        android:layout_marginBottom="@dimen/splash_bottom_margin"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/tvSplashVersionName"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:id="@+id/tvSplashCopyright"
+            android:layout_marginTop="@dimen/splash_middle_top_margin"/>
+    </LinearLayout>
 
 </RelativeLayout>

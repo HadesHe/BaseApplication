@@ -3,4 +3,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="splash_top_margin">130dp</dimen>
+    <dimen name="small_text">12dp</dimen>
+    <dimen name="splash_middle_top_margin">10dp</dimen>
+    <dimen name="splash_bottom_padding">10dp</dimen>
+    <dimen name="splash_bottom_margin">40dp</dimen>
 </resources>
