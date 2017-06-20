@@ -4,7 +4,7 @@ package com.avenging.hades.client.base;
  * Created by zhanghehe on 2017/6/19.
  */
 
-public abstract class BasePresenter<T extends BaseView> {
+public abstract class BasePresenter<T > {
     protected T mView;
 
     public void attachView(T view){

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.avenging.hades.baselibrary.base.BaseAppcompatActitvity;
+import com.avenging.hades.client.R;
 import com.avenging.hades.client.SimplifyReaderApplication;
 
 /**
@@ -28,7 +29,7 @@ public abstract class BaseActivity extends BaseAppcompatActitvity implements Bas
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        mToolbar=(Toolbar)findViewById(com.avenging.hades.baselibrary.R.id.common_toolbar);
+        mToolbar=(Toolbar)findViewById(R.id.common_toolbar);
         if(mToolbar!=null){
             setSupportActionBar(mToolbar);
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -41,4 +42,29 @@ public abstract class BaseActivity extends BaseAppcompatActitvity implements Bas
     }
 
     protected abstract boolean isApplyKitKatTransluency();
+
+    @Override
+    public void showError(String msg) {
+        toggleShowError(true,msg,null);
+    }
+
+    @Override
+    public void showException(String msg) {
+        toggleShowError(true,msg,null);
+    }
+
+    @Override
+    public void showNetError() {
+        toggleNetError(true,null);
+    }
+
+    @Override
+    public void showLoading(String msg) {
+        toggleShowLoading(true,msg);
+    }
+
+    @Override
+    public void hideLoading() {
+        toggleShowLoading(false);
+    }
 }

@@ -22,12 +22,14 @@ import com.avenging.hades.baselibrary.netstatus.NetChangeObserver;
 import com.avenging.hades.baselibrary.netstatus.NetStateReceiver;
 import com.avenging.hades.baselibrary.netstatus.NetUtils;
 import com.avenging.hades.baselibrary.utils.SmartBarUtils;
+import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public abstract class BaseAppcompatActitvity extends AppCompatActivity {
 
+    public static final int TRANSITION_MODE_NULL=-1;
     public static final int TRANSITION_MODE_LEFT=0;
     public static final int TRANSITION_MODE_RIGHT=1;
     public static final int TRANSITION_MODE_TOP=2;
@@ -44,7 +46,7 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     private Snackbar mSnackBar;
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef({TRANSITION_MODE_LEFT,TRANSITION_MODE_RIGHT,TRANSITION_MODE_TOP,TRANSITION_MODE_BOTTOM,TRANSITION_MODE_SCALE,TRANSITION_MODE_FADE})
+    @IntDef({TRANSITION_MODE_NULL,TRANSITION_MODE_LEFT,TRANSITION_MODE_RIGHT,TRANSITION_MODE_TOP,TRANSITION_MODE_BOTTOM,TRANSITION_MODE_SCALE,TRANSITION_MODE_FADE})
     public @interface TransitionMode{}
 
     @Override
@@ -69,7 +71,6 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
                 case TRANSITION_MODE_FADE:
                     overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
                     break;
-
             }
         }
         super.onCreate(savedInstanceState);
@@ -179,7 +180,6 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        initView();
         if(null!=getLoadingTargetView()){
             mVaryViewHelperController=new VaryViewHelperController(getLoadingTargetView());
         }
@@ -197,7 +197,6 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
 //        }
     }
 
-    protected abstract void initView();
 
     protected abstract View getLoadingTargetView();
 
@@ -307,7 +306,7 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
         }
     }
 
-    protected void toggleNetError(boolean toggle,String msg,View.OnClickListener onClickListener){
+    protected void toggleNetError(boolean toggle,View.OnClickListener onClickListener){
         if(null==mVaryViewHelperController){
             throw new IllegalArgumentException("You must return a right target view for net error");
         }
@@ -320,10 +319,17 @@ public abstract class BaseAppcompatActitvity extends AppCompatActivity {
 
     protected void setSystemBarTintDrawable(Drawable tintDrawable){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT){
-            // TODO: 2017/6/19 start SystemBarTintManager
             SystemBarTintManager mTintManager=new SystemBarTintManager(this);
+            if(tintDrawable != null){
+                mTintManager.setStatusBarTintEnabled(true);
+                mTintManager.setTintDrawable(tintDrawable);
+            }else{
+                mTintManager.setStatusBarTintEnabled(false);
+                mTintManager.setTintDrawable(null);
+            }
         }
     }
+
 
 
 
