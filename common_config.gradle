@@ -1,0 +1,8 @@
+project.ext{
+    compileSdkVersion=23
+    buildToolsVersion="23.0.2"
+    minSdkVersion=15
+    targetSdkVerison=23
+
+    mainEnableDebug=false;
+}

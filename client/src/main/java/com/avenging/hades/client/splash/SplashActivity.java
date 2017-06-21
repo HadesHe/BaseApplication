@@ -11,12 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.android.arouter.facade.annotation.Route;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.avenging.hades.client.R;
 import com.avenging.hades.client.base.BaseActivity;
 
 import java.util.Calendar;
 
-@Route(path = "/SimplifyReader/SplashActivity")
 public class SplashActivity extends BaseActivity implements SplashContract.SplashView{
 
 
@@ -61,7 +61,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.Splas
     }
 
     private void navigateToHomePage() {
-        // TODO: 2017/6/21 navigateToHomePage
+        ARouter.getInstance().build("/SimplifyReader/MainActivity").navigation();
     }
 
     @Override
