@@ -17,7 +17,8 @@ public interface SplashContract {
 
     }
 
-    public interface SplashPresenter {
+    public interface SplashPresenter  {
 
     }
+
 }

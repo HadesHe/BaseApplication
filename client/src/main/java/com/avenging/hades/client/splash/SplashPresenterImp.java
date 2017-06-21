@@ -12,4 +12,5 @@ import com.avenging.hades.client.base.BasePresenter;
  */
 
 public class SplashPresenterImp extends BasePresenter<SplashContract.SplashView> implements SplashContract.SplashPresenter {
+
 }

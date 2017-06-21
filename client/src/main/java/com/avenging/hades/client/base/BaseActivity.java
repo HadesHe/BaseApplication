@@ -29,12 +29,12 @@ public abstract class BaseActivity extends BaseAppcompatActitvity implements Bas
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
-        mToolbar=(Toolbar)findViewById(R.id.common_toolbar);
-        if(mToolbar!=null){
-            setSupportActionBar(mToolbar);
-            getSupportActionBar().setHomeButtonEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+//        mToolbar=(Toolbar)findViewById(R.id.common_toolbar);
+//        if(mToolbar!=null){
+//            setSupportActionBar(mToolbar);
+//            getSupportActionBar().setHomeButtonEnabled(true);
+//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
     }
 
     protected SimplifyReaderApplication getBaseApplication(){
@@ -65,6 +65,6 @@ public abstract class BaseActivity extends BaseAppcompatActitvity implements Bas
 
     @Override
     public void hideLoading() {
-        toggleShowLoading(false);
+        toggleShowLoading(false,null);
     }
 }
