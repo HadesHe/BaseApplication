@@ -1,16 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
+    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.main.MainActivity">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <include
+        layout="@layout/common_toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
         />
 
-</RelativeLayout>
+  <android.support.v4.widget.DrawerLayout
+      android:id="@+id/dlMain"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      >
+
+      <com.avenging.hades.baselibrary.widgets.XViewPager
+          android:id="@+id/vpagerMainContainer"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"></com.avenging.hades.baselibrary.widgets.XViewPager>
+
+      <RelativeLayout
+          android:layout_width="@dimen/main_menu_width"
+          android:layout_height="match_parent"
+          android:gravity="left"
+          >
+          <ImageView
+              android:id="@+id/ivMainNaviImage"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/main_menu_top_image_height"
+              android:layout_alignParentTop="true"
+              android:clickable="true"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:scaleType="centerCrop"
+              android:src="@drawable/banner"
+              />
+          <ListView
+              android:id="@+id/lvMainNavilist"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_below="@+id/ivMainNaviImage"
+              android:background="@android:color/white"
+              android:cacheColorHint="@android:color/transparent"
+              android:divider="@null"
+              android:dividerHeight="0dp"
+              android:overScrollMode="never"
+              android:scrollbars="none"
+              ></ListView>
+      </RelativeLayout>
+  </android.support.v4.widget.DrawerLayout>
+
+</LinearLayout>

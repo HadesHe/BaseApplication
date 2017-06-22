@@ -1,6 +1,6 @@
 package com.avenging.hades.client.splash;
 
-import com.avenging.hades.client.base.BasePresenter;
+import com.avenging.hades.baselibrary.base.BasePresenter;
 
 /**
  * __   __    _

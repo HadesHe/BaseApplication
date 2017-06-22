@@ -1,4 +1,4 @@
-package com.avenging.hades.client.base;
+package com.avenging.hades.baselibrary.base;
 
 /**
  * Created by zhanghehe on 2017/6/19.
