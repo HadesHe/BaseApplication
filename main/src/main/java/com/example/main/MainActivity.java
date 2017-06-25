@@ -8,7 +8,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
 
+import com.avenging.hades.baselibrary.adapter.ListViewDataAdapter;
 import com.avenging.hades.baselibrary.base.BaseAppcompatActitvity;
+import com.avenging.hades.baselibrary.bean.NavigationEntity;
 import com.avenging.hades.baselibrary.widgets.XViewPager;
 
 
@@ -50,7 +52,7 @@ public class MainActivity extends BaseAppcompatActitvity implements MainContract
         mActionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         dlMain.addDrawerListener(mActionBarDrawerToggle);
 
-        mNavListAdapter=new ListViewDataAdapter
+        mNavListAdapter=new ListViewDataAdapter<NavigationEntity>
 
     }
 
