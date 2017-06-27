@@ -5,10 +5,17 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.avenging.hades.baselibrary.adapter.ListViewDataAdapter;
+import com.avenging.hades.baselibrary.adapter.ViewHolderBase;
+import com.avenging.hades.baselibrary.adapter.ViewHolderCreator;
 import com.avenging.hades.baselibrary.base.BaseAppcompatActitvity;
 import com.avenging.hades.baselibrary.bean.NavigationEntity;
 import com.avenging.hades.baselibrary.widgets.XViewPager;
@@ -22,6 +29,13 @@ public class MainActivity extends BaseAppcompatActitvity implements MainContract
     private MainPresenterImp mMainPresenter;
     private Toolbar mToolbar;
     private ActionBarDrawerToggle mActionBarDrawerToggle;
+    private int[] mCheckedListItemColorResIds={
+            R.color.navigation_checked_picture_text_color,
+            R.color.navigation_checked_video_text_color,
+            R.color.navigation_checked_music_text_color
+    };
+    private ListViewDataAdapter<NavigationEntity> mNavListAdapter;
+    private int mCurrentMenuCheckedPos=0;
 
     @Override
     protected void initViewAndEvents() {
@@ -51,8 +65,52 @@ public class MainActivity extends BaseAppcompatActitvity implements MainContract
 
         mActionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         dlMain.addDrawerListener(mActionBarDrawerToggle);
+        if()
 
-        mNavListAdapter=new ListViewDataAdapter<NavigationEntity>
+        mNavListAdapter=new ListViewDataAdapter<NavigationEntity>(new ViewHolderCreator<NavigationEntity>() {
+            @Override
+            public ViewHolderBase<NavigationEntity> createViewHolder(int position) {
+                return new ViewHolderBase<NavigationEntity>() {
+                    public TextView tvNavItemName;
+                    public ImageView ivNavItemIcon;
+
+                    @Override
+                    public View createView(LayoutInflater layoutInflater) {
+                        View convertView=layoutInflater.inflate(R.layout.list_item_navigation,null);
+                        ivNavItemIcon=(ImageView)convertView.findViewById(R.id.ivNavItemIcon);
+                        tvNavItemName=(TextView)convertView.findViewById(R.id.tvNavItemName);
+                        return convertView;
+                    }
+
+                    @Override
+                    public void showData(int position, NavigationEntity itemData) {
+                        ivNavItemIcon.setImageResource(itemData.getIconResId());
+                        tvNavItemName.setText(itemData.getName());
+
+                        if(mCurrentMenuCheckedPos==position){
+                            tvNavItemName.setTextColor(getResources().getColor(mCheckedListItemColorResIds[i]));
+                        }else{
+                            tvNavItemName.setTextColor(getResources().getColor(android.R.color.black));
+                        }
+                    }
+                };
+            }
+        });
+
+        lvMainNavilist.setAdapter(mNavListAdapter);
+        mNavListAdapter.getDataList().add(navigationList);
+        mNavListAdapter.notifyDataSetChanged();
+        setTitle(mNavListAdapter.getItem(mCurrentMenuCheckedPos).getName());
+
+        lvMainNavilist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                mCurrentMenuCheckedPos=position;
+                mNavListAdapter.notifyDataSetChanged();
+                dlMain.closeDrawer(Gravity.LEFT);
+                vpagerMainContainer.setCurrentItem(mCurrentMenuCheckedPos,false);
+            }
+        });
 
     }
 
